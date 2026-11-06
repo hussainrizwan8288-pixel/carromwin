@@ -1,0 +1,221 @@
+:root {
+    --bg-main: #0b132b;
+    --bg-header: #1c2541;
+    --bg-card: #1d2d44;
+    --accent: #ffb703;
+    --accent-hover: #fb8500;
+    --text: #ffffff;
+    --text-muted: #8d99ae;
+    --border: #415a77;
+    --danger: #d90429;
+    --success: #38b000;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-main);
+    color: var(--text);
+    margin: 0;
+    padding: 0;
+}
+
+/* Header & Top Bar */
+header {
+    background: var(--bg-header);
+    padding: 12px 25px;
+    border-bottom: 2px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.logo {
+    color: var(--accent);
+    font-size: 24px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.nav-menu button {
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--border);
+    padding: 6px 14px;
+    margin-left: 5px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.nav-menu button:hover, .nav-menu button.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #0b132b;
+}
+
+.user-box {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.balance-display {
+    background: #0b132b;
+    padding: 6px 12px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    color: var(--accent);
+    font-weight: bold;
+}
+
+/* Layout Grid */
+.main-layout {
+    display: grid;
+    grid-template-columns: 220px 1fr 300px;
+    gap: 15px;
+    padding: 20px;
+    max-width: 1500px;
+    margin: auto;
+}
+
+@media(max-width: 1024px) {
+    .main-layout { grid-template-columns: 1fr; }
+}
+
+.sidebar, .betslip-panel {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 15px;
+    height: fit-content;
+}
+
+.sidebar h3, .betslip-panel h3 {
+    margin-top: 0;
+    color: var(--accent);
+    font-size: 16px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 8px;
+}
+
+.sport-link {
+    display: block;
+    padding: 8px 10px;
+    color: var(--text-muted);
+    text-decoration: none;
+    border-radius: 4px;
+    margin-bottom: 4px;
+    font-size: 14px;
+}
+
+.sport-link:hover {
+    background: rgba(255, 183, 3, 0.1);
+    color: var(--text);
+}
+
+/* Center Content */
+.content-area {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.section-box {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+}
+
+.section-box h2 {
+    margin-top: 0;
+    font-size: 18px;
+    color: var(--accent);
+}
+
+/* Match Cards */
+.match-card {
+    background: #0b132b;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 12px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.odds-group {
+    display: flex;
+    gap: 6px;
+}
+
+.odd-btn {
+    background: var(--bg-header);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 13px;
+}
+
+.odd-btn:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #0b132b;
+}
+
+/* Casino Games Grid */
+.casino-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 15px;
+}
+
+.casino-game-card {
+    background: #0b132b;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 15px;
+    text-align: center;
+}
+
+canvas {
+    background: #000;
+    border-radius: 4px;
+    margin: 10px auto;
+    display: block;
+    border: 1px solid var(--border);
+}
+
+input, select {
+    padding: 8px;
+    width: 100%;
+    box-sizing: border-box;
+    background: var(--bg-main);
+    color: white;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    margin: 6px 0;
+    font-size: 13px;
+}
+
+.action-btn {
+    background: var(--accent);
+    color: #0b132b;
+    border: none;
+    padding: 10px;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 5px;
+}
+
+.action-btn:hover { background: var(--accent-hover); color: white; }
+.hidden { display: none !important; }
