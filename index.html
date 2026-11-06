@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CarromWin - Sports & Casino Platform</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <div class="logo">🎯 CARROMWIN</div>
+        <div class="nav-menu">
+            <button onclick="switchTab('sports')" id="nav-sports" class="active">⚽ Sports</button>
+            <button onclick="switchTab('casino')" id="nav-casino">🚀 Casino & Aviator</button>
+            <button onclick="switchTab('admin')" id="nav-admin">🔐 Admin Panel</button>
+        </div>
+        <div class="user-box">
+            <div class="balance-display">🪙 <span id="balance">1000.00</span></div>
+            <button class="action-btn" style="width:auto; padding:6px 12px;" onclick="depositModal()">Deposit</button>
+        </div>
+    </header>
+
+    <div class="main-layout">
+        
+        <!-- LEFT SIDEBAR -->
+        <div class="sidebar">
+            <h3>Live Sports</h3>
+            <a href="#" class="sport-link">🎯 Carrom Championships</a>
+            <a href="#" class="sport-link">⚽ Football (Soccer)</a>
+            <a href="#" class="sport-link">🏀 Basketball</a>
+            <a href="#" class="sport-link">🎾 Tennis</a>
+            <h3 style="margin-top: 20px;">Casino Categories</h3>
+            <a href="#" class="sport-link" onclick="switchTab('casino')">🚀 Sky Crash (Aviator)</a>
+            <a href="#" class="sport-link" onclick="switchTab('casino')">🎡 Spin & Win</a>
+        </div>
+
+        <!-- CENTER CONTENT -->
+        <div class="content-area">
+
+            <!-- SPORTS SECTION -->
+            <div id="sports-section" class="section-box">
+                <h2>Live Match Odds</h2>
+                
+                <div class="match-card">
+                    <div>
+                        <strong>Carrom Pro League: Kings vs Strikers</strong><br>
+                        <small style="color:var(--text-muted);">Live • Set 2</small>
+                    </div>
+                    <div class="odds-group">
+                        <button class="odd-btn" onclick="placeBet('Kings', 1.75)">1 (1.75)</button>
+                        <button class="odd-btn" onclick="placeBet('Strikers', 2.10)">2 (2.10)</button>
+                    </div>
+                </div>
+
+                <div class="match-card">
+                    <div>
+                        <strong>Real Madrid vs Barcelona</strong><br>
+                        <small style="color:var(--text-muted);">Live • 75' Half Time</small>
+                    </div>
+                    <div class="odds-group">
+                        <button class="odd-btn" onclick="placeBet('Real Madrid', 1.85)">1 (1.85)</button>
+                        <button class="odd-btn" onclick="placeBet('Draw', 3.40)">X (3.40)</button>
+                        <button class="odd-btn" onclick="placeBet('Barcelona', 4.10)">2 (4.10)</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CASINO SECTION -->
+            <div id="casino-section" class="section-box hidden">
+                <h2>Casino & Crash Games</h2>
+                <div class="casino-grid">
+                    
+                    <!-- AVIATOR CRASH GAME -->
+                    <div class="casino-game-card">
+                        <h3>Sky Crash (Aviator)</h3>
+                        <canvas id="crash-canvas" width="220" height="110"></canvas>
+                        <p id="crash-status" style="color:var(--accent); font-weight:bold;">1.00x</p>
+                        <input type="number" id="bet-crash" value="50">
+                        <button class="action-btn" id="crash-btn" onclick="startCrash()">Place Bet & Fly</button>
+                    </div>
+
+                    <!-- SPIN AND WIN -->
+                    <div class="casino-game-card">
+                        <h3>Spin & Win Wheel</h3>
+                        <div id="wheel-container" style="position:relative; width:100px; height:100px; margin:10px auto; border-radius:50%; border:3px solid var(--accent); transition:transform 3s ease; background:conic-gradient(#d90429 0deg 90deg, #ffb703 90deg 180deg, #38b000 180deg 270deg, #0077b6 270deg 360deg);"></div>
+                        <p id="wheel-result" style="font-size:12px; color:var(--text-muted);">Spin for rewards</p>
+                        <button class="action-btn" id="spin-btn" onclick="spinWheel()">Spin (Cost: 50)</button>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- ADMIN SECTION -->
+            <div id="admin-section" class="section-box hidden">
+                <h2>🔐 Administrator Control Panel</h2>
+                <div id="admin-login">
+                    <p>Enter Master Password (Default: <code>admin123</code>):</p>
+                    <input type="password" id="admin-pass" placeholder="Password">
+                    <button class="action-btn" onclick="loginAdmin()">Login</button>
+                </div>
+                <div id="admin-controls" class="hidden">
+                    <p style="color:var(--success); font-weight:bold;">Status: Logged In</p>
+                    <label>Set User Balance:</label>
+                    <input type="number" id="admin-balance-input" value="1000">
+                    <button class="action-btn" onclick="adminUpdateBalance()">Update Balance</button>
+                    <button class="action-btn" style="background:var(--danger); color:white; margin-top:10px;" onclick="resetData()">Reset Platform</button>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- RIGHT SIDEBAR: Bet Slip -->
+        <div class="betslip-panel">
+            <h3>Bet Slip</h3>
+            <div id="betslip-content">
+                <p style="color:var(--text-muted); font-size:13px;">No bets selected. Click on any match odds to add to slip.</p>
+            </div>
+            <div id="active-bet-box" class="hidden">
+                <p>Selection: <strong id="slip-selection">-</strong></p>
+                <p>Odds: <strong id="slip-odds">0.00</strong></p>
+                <label>Stake Amount:</label>
+                <input type="number" id="slip-stake" value="100" oninput="calculatePayout()">
+                <p>Potential Payout: 🪙 <span id="slip-payout" style="color:var(--accent); font-weight:bold;">0.00</span></p>
+                <button class="action-btn" onclick="confirmBet()">Place Bet</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        let balance = parseFloat(localStorage.getItem('carromwin_balance')) || 1000.00;
+        function updateUI() {
+            document.getElementById('balance').innerText = balance.toFixed(2);
+            localStorage.setItem('carromwin_balance', balance);
+        }
+
+        function switchTab(tab) {
+            document.getElementById('nav-sports').classList.remove('active');
+            document.getElementById('nav-casino').classList.remove('active');
+            document.getElementById('nav-admin').classList.remove('active');
+            document.getElementById('sports-section').classList.add('hidden');
+            document.getElementById('casino-section').classList.add('hidden');
+            document.getElementById('admin-section').classList.add('hidden');
+
+            if(tab === 'sports') {
+                document.getElementById('nav-sports').classList.add('active');
+                document.getElementById('sports-section').classList.remove('hidden');
+            } else if(tab === 'casino') {
+                document.getElementById('nav-casino').classList.add('active');
+                document.getElementById('casino-section').classList.remove('hidden');
+            } else if(tab === 'admin') {
+                document.getElementById('nav-admin').classList.add('active');
+                document.getElementById('admin-section').classList.remove('hidden');
+            }
+        }
+
+        function depositModal() {
+            let amt = prompt("Enter deposit amount (Practice Coins):", "500");
+            if(amt && !isNaN(amt)) {
+                balance += parseFloat(amt);
+                updateUI();
+                alert(`Successfully deposited ${amt} coins to CarromWin!`);
+            }
+        }
+
+        /* Betting Slip Logic */
+        let currentSelection = "", currentOdds = 0;
+        function placeBet(selection, odds) {
+            currentSelection = selection;
+            currentOdds = odds;
+            document.getElementById('betslip-content').classList.add('hidden');
+            document.getElementById('active-bet-box').classList.remove('hidden');
+            document.getElementById('slip-selection').innerText = selection;
+            document.getElementById('slip-odds').innerText = odds;
+            calculatePayout();
+        }
+
+        function calculatePayout() {
+            let stake = parseFloat(document.getElementById('slip-stake').value) || 0;
+            let payout = stake * currentOdds;
+            document.getElementById('slip-payout').innerText = payout.toFixed(2);
+        }
+
+        function confirmBet() {
+            let stake = parseFloat(document.getElementById('slip-stake').value);
+            if(stake > balance || stake <= 0) {
+                alert("Insufficient balance or invalid stake!");
+                return;
+            }
+            balance -= stake;
+            updateUI();
+            alert(`Bet successfully placed on ${currentSelection} for ${stake} coins!`);
+            document.getElementById('active-bet-box').classList.add('hidden');
+            document.getElementById('betslip-content').classList.remove('hidden');
+        }
+
+        /* Aviator Crash Game Logic */
+        let crashInterval, currentMultiplier = 1.00, isPlayingCrash = false;
+        function startCrash() {
+            let bet = parseFloat(document.getElementById('bet-crash').value);
+            if(bet > balance || bet <= 0) return alert("Invalid balance or bet!");
+            balance -= bet; updateUI();
+
+            let btn = document.getElementById('crash-btn');
+            btn.innerText = "Cash Out"; btn.setAttribute("onclick", "cashOutCrash()");
+            currentMultiplier = 1.00; isPlayingCrash = true;
+            let crashPoint = (Math.random() * 3 + 1.1).toFixed(2);
+            let ctx = document.getElementById('crash-canvas').getContext('2d');
+
+            crashInterval = setInterval(() => {
+                currentMultiplier += 0.04;
+                document.getElementById('crash-status').innerText = currentMultiplier.toFixed(2) + 'x';
+                ctx.clearRect(0, 0, 220, 110);
+                ctx.strokeStyle = "#ffb703"; ctx.lineWidth = 2;
+                ctx.beginPath(); ctx.moveTo(0, 110);
+                ctx.lineTo(220 * (currentMultiplier/4), 110 - (110 * (currentMultiplier/4)));
+                ctx.stroke();
+
+                if(currentMultiplier >= crashPoint && isPlayingCrash) endCrash(false, 0);
+            }, 100);
+        }
+
+        function cashOutCrash() {
+            if(!isPlayingCrash) return;
+            let bet = parseFloat(document.getElementById('bet-crash').value);
+            let winnings = Math.floor(bet * currentMultiplier);
+            endCrash(true, winnings);
+        }
+
+        function endCrash(won, winnings) {
+            clearInterval(crashInterval); isPlayingCrash = false;
+            let status = document.getElementById('crash-status');
+            let btn = document.getElementById('crash-btn');
+            if(won) {
+                balance += winnings;
+                status.innerHTML = `<span style="color:#38b000;">Won +${winnings} coins!</span>`;
+            } else {
+                status.innerHTML = `<span style="color:var(--danger);">Crashed at ${currentMultiplier.toFixed(2)}x</span>`;
+            }
+            updateUI();
+            btn.innerText = "Place Bet & Fly"; btn.setAttribute("onclick", "startCrash()");
+        }
+
+        /* Spin Wheel Logic */
+        let wheelRotation = 0;
+        function spinWheel() {
+            if(balance < 50) return alert("Insufficient funds!");
+            balance -= 50; updateUI();
+            let btn = document.getElementById('spin-btn'); btn.disabled = true;
+            wheelRotation += Math.floor(Math.random() * 360) + 1440;
+            document.getElementById('wheel-container').style.transform = `rotate(${wheelRotation}deg)`;
+            setTimeout(() => {
+                let prize = [100, 0, 200, 50][Math.floor((wheelRotation % 360) / 90)];
+                balance += prize; updateUI();
+                document.getElementById('wheel-result').innerText = `Won ${prize} coins!`;
+                btn.disabled = false;
+            }, 3000);
+        }
+
+        /* Admin Functions */
+        function loginAdmin() {
+            let pass = document.getElementById('admin-pass').value;
+            if(pass === "admin123") {
+                document.getElementById('admin-login').classList.add('hidden');
+                document.getElementById('admin-controls').classList.remove('hidden');
+            } else {
+                alert("Incorrect password! Use admin123");
+            }
+        }
+        function adminUpdateBalance() {
+            let newBal = parseFloat(document.getElementById('admin-balance-input').value);
+            balance = newBal; updateUI();
+            alert("Balance updated successfully!");
+        }
+        function resetData() {
+            balance = 1000; updateUI();
+            localStorage.clear();
+            alert("Platform reset!");
+        }
+
+        updateUI();
+    </script>
+</body>
+</html>
